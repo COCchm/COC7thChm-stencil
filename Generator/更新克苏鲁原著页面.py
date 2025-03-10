@@ -2,11 +2,10 @@ import os
 import math
 from pypinyin import lazy_pinyin
 
-TEMPLATE_PATH = "../模板/鸣谢列表模板.htm"
-THANKS_PATH_1 = "../鸣谢列表/翻译奉献者列表.txt"
-THANKS_PATH_2 = "../鸣谢列表/CHM制作者列表.txt"
-THANKS_PATH_3 = "../鸣谢列表/纠错参与者列表.txt"
-OUTPUT_PATH = "../鸣谢列表.htm"
+TEMPLATE_PATH = "../模板/克苏鲁神话原著模版.htm"
+THANKS_PATH_1 = "../鸣谢列表/虹馆翻译部.txt"
+THANKS_PATH_2 = "../鸣谢列表/克圈老前辈.txt"
+OUTPUT_PATH = "../克苏鲁神话原著.htm"
 
 def load_and_update(file: str) -> list:
     if os.path.exists(file):
@@ -49,12 +48,10 @@ if __name__ == "__main__":
     print("已更新翻译贡献者列表。")
     thanks_list_2 = load_and_update(THANKS_PATH_2)
     print("已更新CHM制作者列表。")
-    thanks_list_3 = load_and_update(THANKS_PATH_3)
-    print("已更新纠错参与者列表。")
     output = ""
     with open(TEMPLATE_PATH,'r',encoding='utf-8') as _f:
         output = _f.read()
-    output = output.replace("{1}",generate_output(thanks_list_1)).replace("{2}",generate_output(thanks_list_2)).replace("{3}",generate_output(thanks_list_3))
+    output = output.replace("{1}",generate_output(thanks_list_1)).replace("{2}",generate_output(thanks_list_2))
     with open(OUTPUT_PATH,'w',encoding='utf-8',errors='ignore') as _f:
          _f.write(output)
     print("更新完毕！")

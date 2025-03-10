@@ -1,5 +1,4 @@
 import codecs
-import socket
 
 PREFIX = """[GENERAL]
 Ver=1
@@ -7,7 +6,7 @@ Title=COC7th 不全书
 RootDir=
 Dictionary=en_US
 DefaultTopic=写在前面.htm
-CompiledFile=<Project_Folder>_output\HTML Help\试做COC残缺大典原始版本.chm
+CompiledFile=<Project_Folder>_output\HTML Help\试做 COC 残缺大典原始版本.chm
 CustomTemplate=<Project_Folder>\模板\空白页模板.htm
 DefaultTemplate=0
 Language=0x0804
@@ -31,7 +30,7 @@ WebHelpLanguage=1
 StartFromRoot=1
 AutoCollapse=0
 DrawLines=1
-SingleHtmlFilename=试做COC残缺大典原始版本 (2).htm
+SingleHtmlFilename=试做 COC 残缺大典原始版本 (2).htm
 SingleHtmlOutputFolder=<Project_Folder>_output\SingleHTML\
 SingleHtmlTitle=COC7th 不全书
 SingleHtmlHasToc=0
@@ -131,7 +130,7 @@ PageLayout=0
 [TOPICS]
 TitleList="""
 
-name = input('请输入要生成的wcp文件名：')
+name = input('请输入要生成的 wcp 文件名：')
 
 def convert_html_to_ini():
     object_list = ""
@@ -141,7 +140,8 @@ def convert_html_to_ini():
         'H2': 1,
         'H3': 2,
         'H4': 3,
-        'H5': 4
+        'H5': 4,
+        'H6': 5
     }
 
 
@@ -178,13 +178,23 @@ def convert_html_to_ini():
                     last_h1_title = title
                     last_h2_title = None  # Reset last H2 when H1 is found
                     last_h3_title = None  # Reset last H3 when H1 is found
+                    last_h4_title = None
+
                 elif level == 1:  # H2
                     h2_count += 1  # 增加 H2 的数量
                     last_h2_title = title
                     last_h3_title = None  # Reset last H3 when H2 is found
+                    last_h4_title = None
 
                 elif level == 2:  # H3
                     last_h3_title = title
+                    last_h4_title = None
+                
+                elif level == 3:  # H4
+                    last_h4_title = title
+
+                elif level == 4:  # H5
+                    last_h5_title = title
 
                 # 根据级别生成 URL
                 # {h2_count}.代表第一级标题的序号，默认最上面的文件夹带有序号，如果最上面的文件夹不带序号，请删掉下方的{h2_count}.
@@ -198,6 +208,8 @@ def convert_html_to_ini():
                     url = f"{last_h1_title}\{h2_count}.{last_h2_title}\{last_h3_title}\{title}.htm"
                 elif level == 4:  # H5
                     url = f"{last_h1_title}\{h2_count}.{last_h2_title}\{last_h3_title}\{last_h4_title}\{title}.htm"
+                elif level == 5:  # H6
+                    url = f"{last_h1_title}\{h2_count}.{last_h2_title}\{last_h3_title}\{last_h4_title}\{last_h5_title}\{title}.htm"
                 
                 # 添加 TitleList 信息
                 title_list.append(f"TitleList.Title.{index}={title}")
